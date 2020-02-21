@@ -87,7 +87,6 @@ def normalCalibrationSequence(objectRoot, objectOdrv):
     objectOdrv.axis1.requested_state = AXIS_STATE_ENCODER_INDEX_SEARCH
     while objectOdrv.axis1.current_state != AXIS_STATE_IDLE:
         time.sleep(0.1)
-    objectRoot.update()
     time.sleep(delayLength)
     ###Check encoder calibration###
     mode01Txt4.set("Checking if encoder calibration was succesful.")
@@ -113,9 +112,9 @@ def normalCalibrationSequence(objectRoot, objectOdrv):
     ###Going to IDLE###
     mode01Txt4.set("End of calibration. Going to IDLE.")
     mode01Msg4.configure(text = mode01Txt4)
+    objectRoot.update()
     objectOdrv.axis0.requested_state = AXIS_STATE_IDLE
     objectOdrv.axis1.requested_state = AXIS_STATE_IDLE
-    objectRoot.update()
     time.sleep(delayLength)
     calibrationSuccesful01 = True
     objectRoot.destroy()

@@ -4,14 +4,14 @@
 from odrive.enums import *
 import odrive
 
-AXIS0_CURRENT_LIM = 10 #[A]
-AXIS1_CURRENT_LIM = 10 #[A]
+AXIS0_CURRENT_LIM = 15 #[A]
+AXIS1_CURRENT_LIM = 15 #[A]
 
 AXIS0_VEL_LIMIT = 100000 #[Counts/S]
 AXIS1_VEL_LIMIT = 100000 #[Counts/S]
 
-AXIS0_CALIBRATION_CURRENT = 10 #[A]
-AXIS1_CALIBRATION_CURRENT = 10 #[A]
+AXIS0_CALIBRATION_CURRENT = 15 #[A]
+AXIS1_CALIBRATION_CURRENT = 15 #[A]
 
 AXIS0_POLE_PAIRS = 7 #
 AXIS1_POLE_PAIRS = 7 #
@@ -52,6 +52,9 @@ def sendParameters(objectOdrv):
     objectOdrv.axis0.encoder.config.mode = AXIS1_ENCODER_MODE
     #Brake resistance
     objectOdrv.config.brake_resistance = ODRV0_BRAKE_RESISTANCE
+    #Go to trayectory control mode
+    objectOdrv.axis0.controller.config.control_mode = CTRL_MODE_POSITION_CONTROL
+    objectOdrv.axis1.controller.config.control_mode = CTRL_MODE_POSITION_CONTROL
     #TODO: Motor parameter, Check if need to be implemented and checked later
     """
     objectOdrv.axis0.motor.config.resistance_calib_max_voltage = 4
@@ -89,6 +92,8 @@ def checkParameters(objectOdrv):
     if(not(objectOdrv.axis0.motor.config.pre_calibrated == True) or not(objectOdrv.axis1.motor.config.pre_calibrated == True)):
         return False
     if(not(objectOdrv.axis0.encoder.config.use_index == True) or not(objectOdrv.axis1.encoder.config.use_index == True)):
+        return False
+    if(not(objectOdrv.axis0.controller.config.control_mode == CTRL_MODE_POSITION_CONTROL) or not(objectOdrv.axis1.controller.config.control_mode == CTRL_MODE_POSITION_CONTROL)):
         return False
     else:
         return True
